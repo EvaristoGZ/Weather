@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-import requests
 import json
+import requests
 print "Aplicación base || OpenWeatherMap"
 print ""
 
@@ -9,10 +9,12 @@ for elemento in prov:
 	print elemento
 
 valor = (int(raw_input("\n¿De qué ciudad quieres saber la temperatura actual?\n"))-1)
-provlimp = (prov[valor][3:])
-
-print "\nLa temperatura actual de %s es la siguiente:\n" % provlimp
+provlimp = (prov[valor][3:]) # Elimina la numeración de la provincia #
 
 datos = requests.get('http://api.openweathermap.org/data/2.5/weather',params={'q':'%s,spain' % provlimp})
 
-print datos.text
+valores = json.loads(datos.text) # Carga los datos en un diccionario json #
+temperatura = valores['main']['temp']
+temperatura = round(temperatura - 273,1)
+
+print "\nLa temperatura actual de %s %sºC\n" % (provlimp,temperatura)
